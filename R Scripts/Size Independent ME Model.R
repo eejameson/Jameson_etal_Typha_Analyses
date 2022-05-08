@@ -5,9 +5,9 @@ Typha_allocation_model_data <- Typha_allocation_model_data %>%
   mutate(RA_ratio = Infl_Weight/Veg_Weight)
 
 
-RA_ratio_ME_model <- lmer(RA_ratio ~ Species + N_Level_Group + site +
-                            Species*N_Level_Group + N_Level_Group*site +
-                            Species*site + (1 | u_tank),
+RA_ratio_ME_model <- lmer(RA_ratio ~ Taxon + N_Level_Group + site +
+                            Taxon*N_Level_Group + N_Level_Group*site +
+                            Taxon*site + (1 | u_tank),
                           data = Typha_allocation_model_data)
 
 summary(RA_ratio_ME_model)
@@ -21,10 +21,6 @@ RA_model_results$coefficients <- row.names(coefficients(summary(RA_ratio_ME_mode
 RA_model_results <- RA_model_results %>% 
   select(coefficients, everything())
 
-RA_model_results
-
-# write_csv(RA_model_results,
-#           "Cattail_Reproductive_Allocation_Analyses/Data Summaries and Coefficient Comparisons/RA_model_results.csv")
 
 # Perform anova on the model to see which factors are important
 Anova(RA_ratio_ME_model, test.statistic = "F")
@@ -64,7 +60,7 @@ hist(r_lmer_model, main="", xlab="Residuals", col="grey")
 }
 
 {
-  boxplot(r_lmer_model ~ Typha_allocation_model_data$Species, ylab="Residuals", xlab="Taxon", xaxt="n")
+  boxplot(r_lmer_model ~ Typha_allocation_model_data$Taxon, ylab="Residuals", xlab="Taxon", xaxt="n")
   axis(side=1, at=c(1,2,3), labels=c("TYAN", "TYGL", "TYLA"), las=1)
 }
 
@@ -85,7 +81,7 @@ hist(r_lmer_model, main="", xlab="Residuals", col="grey")
 
 # We want to visualize the mean RA ratio for each subgroup
 RA_summary_data <- Typha_allocation_model_data %>% 
-  group_by(site, Species, N_Level_Group) %>% 
+  group_by(site, Taxon, N_Level_Group) %>% 
   # Find the mean RA ratio
   summarize(avg_RA_ratio = mean(RA_ratio),
             # calculate the sample standard deviations
@@ -97,7 +93,7 @@ RA_summary_data <- Typha_allocation_model_data %>%
 
 {
   levels(RA_summary_data$N_Level_Group)
-  levels(RA_summary_data$Species)
+  levels(RA_summary_data$Taxon)
   levels(RA_summary_data$site)
   
   RA_summary_data <- RA_summary_data %>% 
@@ -107,19 +103,19 @@ RA_summary_data <- Typha_allocation_model_data %>%
   levels(RA_summary_data$N_Level_Group) <- c("High",
                                              "Medium",
                                              "Low")
-  levels(RA_summary_data$Species) <- c("T. angustifolia", "T. glauca",
+  levels(RA_summary_data$Taxon) <- c("T. angustifolia", "T. glauca",
                                        "T. latifolia")
   
   levels(RA_summary_data$site) <- c("North Site", "South Site")
   
   levels(RA_summary_data$N_Level_Group)
-  levels(RA_summary_data$Species)
+  levels(RA_summary_data$Taxon)
   levels(RA_summary_data$site) 
   
   
   RA_ratio_nl_site <- ggplot(data = RA_summary_data,
-                             aes(x = Species, y = avg_RA_ratio, 
-                                 fill = Species)) +
+                             aes(x = Taxon, y = avg_RA_ratio, 
+                                 fill = Taxon)) +
     geom_col() +
     geom_errorbar(aes(ymin = avg_RA_ratio - se, ymax = avg_RA_ratio + se),
                   width = 0.2,
@@ -170,7 +166,7 @@ RA_summary_data <- Typha_allocation_model_data %>%
                       name = 'Nutrient Level', # Name for legend
                       labels = c('Low', 'Medium', 'High')) +
     # Make individual graphs for each taxon
-    facet_grid(rows = vars(Species), cols = vars(site)) +
+    facet_grid(rows = vars(Taxon), cols = vars(site)) +
     # Specify title and axes lables
     xlab("Nutrient Level") + 
     ylab("Reproductive Allocation Ratio") + 
@@ -191,7 +187,7 @@ RA_summary_data <- Typha_allocation_model_data %>%
   levels(RA_summary_data$N_Level_Group) <- c("high",
                                              "med",
                                              "low")
-  levels(RA_summary_data$Species) <- c("TYAN", "TYGL", "TYLA")
+  levels(RA_summary_data$Taxon) <- c("TYAN", "TYGL", "TYLA")
   
   levels(RA_summary_data$site) <- c("UMBS", "ESGR")
   
@@ -215,8 +211,8 @@ RA_summary_data <- Typha_allocation_model_data %>%
 ##### Plasticity Calculations #####
 
 RA_table_data <- RA_summary_data %>% 
-  select(site, Species, avg_RA_ratio, N_Level_Group) %>% 
-  group_by(site, Species) %>% 
+  select(site, Taxon, avg_RA_ratio, N_Level_Group) %>% 
+  group_by(site, Taxon) %>% 
   mutate(rank = if_else(avg_RA_ratio == min(avg_RA_ratio), "min",
                         if_else(avg_RA_ratio == max(avg_RA_ratio), "max", "mid"))) %>% 
   ungroup() %>% 
@@ -225,11 +221,11 @@ RA_table_data <- RA_summary_data %>%
   filter(rank == "max" | rank == "min") 
 
 RA_lowN_table <- RA_table_data %>% 
-  group_by(site, Species) %>% 
+  group_by(site, Taxon) %>% 
   filter(num_Nlevel == min(num_Nlevel))
 
 RA_highN_table <- RA_table_data %>% 
-  group_by(site, Species) %>% 
+  group_by(site, Taxon) %>% 
   filter(num_Nlevel == max(num_Nlevel)) %>% 
   rename(highN_ratio = avg_RA_ratio,
          high_NLG = N_Level_Group,
@@ -237,7 +233,7 @@ RA_highN_table <- RA_table_data %>%
          high_NL_rank = num_Nlevel)
 
 RA_wide_table <- left_join(RA_lowN_table, RA_highN_table,
-                           by = c("site", "Species"))  
+                           by = c("site", "Taxon"))  
 
 RA_wide_table <- RA_wide_table %>% 
   unite("Comparison", c("high_NLG", "N_Level_Group"), sep = " - ",
@@ -249,15 +245,13 @@ RA_wide_table
 
 # Format data for exporting
 RA_table_data_export <- RA_wide_table %>% 
-  select(site, Species, Comparison, abs_diff, per_diff) %>% 
-  mutate(Species = if_else(Species == "TYAN", "T. angustifolia",
-                           if_else(Species == "TYGL", "T. glauca",
+  select(site, Taxon, Comparison, abs_diff, per_diff) %>% 
+  mutate(Taxon = if_else(Taxon == "TYAN", "T. angustifolia",
+                           if_else(Taxon == "TYGL", "T. glauca",
                                    "T. latifolia")),
          abs_diff = round(abs_diff, 2),
          per_diff = round(per_diff, 2)) %>% 
-  select(site, Taxon = Species, Comparison,
+  select(site, Taxon = Taxon, Comparison,
          `Overall Difference in AR` = abs_diff,
          `Percent Change in AR` = per_diff) 
 
-# write_csv(RA_table_data_export,
-#           "Cattail_Reproductive_Allocation_Analyses/Data Summaries and Coefficient Comparisons/AR_plasticity_table2b.csv")
