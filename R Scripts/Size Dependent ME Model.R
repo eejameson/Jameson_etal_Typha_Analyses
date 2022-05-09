@@ -170,27 +170,6 @@ resisd_norm_qq_plot <- {qqnorm(r_full_mod)
   qqline(r_full_mod)}
 
 
-NormalityPlot <- function(x, sims=500){ #creates a function called "NormalityPlot" that can be called later
-  #this function has 2 inputs: x = the data input, sims = number of simulations to run (default is 500)
-  mu <- mean(x)           #function first finds the mean of the data
-  s <- sd(x)              #function next finds standard deviation of the data
-  n <- length(x)          #finds the number of datapoints
-  qqnorm(x, main = "", pch="")       #creates a blank plot (pch="" means the plotting character is blank, so dots are not drawn)
-  for(i in 1:sims){       #sets up a loop, which will run "sims" number of times (default 500)
-    d <- rnorm(n, mu, s)  #for each simulation, this generates a random dataset that's normally distributed and has same mean and sd as x
-    lines(sort(qqnorm(d, plot.it=FALSE)$x), sort(qqnorm(d, plot.it=FALSE)$y), col="gray")   #plots the qq plot for random data
-  }
-  points(qqnorm(x, plot.it=FALSE)$x, qqnorm(x, plot.it=FALSE)$y)      #adds the actual data to the simulated data
-  lines(qqline(x))
-  lines(sort(qqnorm(x, plot.it=FALSE)$x), sort(qqnorm(x, plot.it=FALSE)$y), col="red", lwd=2) #adds a qq plot for the actual data
-}
-
-# These two lines of code provide an example of how the above function works
-# They use example data included in R from teh iris data set
-# Let's use this function to see how "normal" (aka, normally distributed) the iris data are:
-NormalityPlot(iris$Sepal.Length) #the deviations from a straight line fall within the realm of random deviations
-NormalityPlot(iris$Petal.Length) #the deviations DO NOT fall within the realm of random deviations
-
 # Our data
 {
   NormalityPlot(Typha_allocation_model_data$Infl_Weight)

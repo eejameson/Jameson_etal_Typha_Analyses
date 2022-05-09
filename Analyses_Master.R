@@ -20,12 +20,19 @@
 
 ##### Load Libraries ####
 
-library(ggplot2)
 # load tidyverse packages
+library(ggplot2)
 library(tidyverse)
-library(nlme)
+
+# Linear mixed effects model packages
 library(lmerTest)
+library(lme4)
+
+# Non-linear mixed effects model packages
+library(nlme)
 library(car)
+
+# Logistic Regression packages
 library(broom)
 
 #### Helper Functions ####
@@ -210,7 +217,7 @@ nrow(Typha_log_graph_data_edited)
 
 # Find maximum number of samples for a given taxon in a given tank
 Typha_log_graph_data_edited %>% 
-  group_by(site, tank, Species) %>% 
+  group_by(site, tank, Taxon) %>% 
   summarise(n_obs = n()) %>% 
   arrange(-n_obs)
 
