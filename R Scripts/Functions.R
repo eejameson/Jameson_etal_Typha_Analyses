@@ -122,5 +122,14 @@ NormalityPlot <- function(x, sims=500){ #creates a function called "NormalityPlo
 # These two lines of code provide an example of how the above function works
 # They use example data included in R from teh iris data set
 # Let's use this function to see how "normal" (aka, normally distributed) the iris data are:
-NormalityPlot(iris$Sepal.Length) #the deviations from a straight line fall within the realm of random deviations
-NormalityPlot(iris$Petal.Length) #the deviations DO NOT fall within the realm of random deviations
+
+{
+  NormalityPlot(iris$Sepal.Length) #the deviations from a straight line fall within the realm of random deviations
+  title("Iris Example Plot 1: Normal")
+}
+
+
+{
+  NormalityPlot(iris$Petal.Length) #the deviations DO NOT fall within the realm of random deviations
+  title("Iris Example Plot 2: Non-Normal")
+}

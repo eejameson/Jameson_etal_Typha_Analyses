@@ -51,12 +51,12 @@ hist(r_lmer_model, main="", xlab="Residuals", col="grey")
 # Our data
 {
   NormalityPlot(Typha_allocation_model_data$Infl_Weight)
-  title(main = "Inflorescence Mass Observations QQ-Plot")
+  title(main = "Size-Independent Inflorescence Mass QQ-Plot")
 }
 
 {
   NormalityPlot(r_lmer_model)
-  title(main = "Random Effects Group Residuals QQ-Plot")
+  title(main = "Size-Independent Rand Effects Grp Resids QQ-Plot")
 }
 
 {

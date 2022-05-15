@@ -173,12 +173,12 @@ resisd_norm_qq_plot <- {qqnorm(r_full_mod)
 # Our data
 {
   NormalityPlot(Typha_allocation_model_data$Infl_Weight)
-  title(main = "Inflorescence Mass Observations QQ-Plot")
+  title(main = "Size-Dependent Inflorescence Mass QQ-Plot")
 } 
 
 {
   NormalityPlot(r_full_mod)
-  title(main = "Random Effects Group Residuals QQ-Plot")
+  title(main = "Size-Dependent Rand Effects Grp Resids QQ-Plot")
 }
 
 
