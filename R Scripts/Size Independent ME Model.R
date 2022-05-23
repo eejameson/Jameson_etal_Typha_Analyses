@@ -103,8 +103,7 @@ RA_summary_data <- Typha_allocation_model_data %>%
   levels(RA_summary_data$N_Level_Group) <- c("High",
                                              "Medium",
                                              "Low")
-  levels(RA_summary_data$Taxon) <- c("T. angustifolia", "T. glauca",
-                                       "T. latifolia")
+  levels(RA_summary_data$Taxon) <- c("Non-native", "Hybrid", "Native")
   
   levels(RA_summary_data$site) <- c("North Site", "South Site")
   
@@ -122,9 +121,8 @@ RA_summary_data <- Typha_allocation_model_data %>%
                   size = 0.75) +
     # Edit Colors and Legend
     scale_fill_manual("Taxon",
-                      labels = c("T. angustifolia", "T. glauca", "T. latifolia"),
-                      values = c("tan1", "deepskyblue4", "deeppink3"),
-                      guide = guide_legend(label.theme = element_text(face = "italic"))) +
+                      labels = c("Non-native", "Hybrid", "Native"),
+                      values = c("tan1", "deepskyblue4", "deeppink3")) +
     # Make individual graphs for each taxon
     facet_grid(rows = vars(N_Level_Group), cols = vars(site)) +
     # Add sample size to the figure
@@ -141,9 +139,7 @@ RA_summary_data <- Typha_allocation_model_data %>%
           axis.text = element_text(size = 10),
           strip.text = element_text(size = 12),
           strip.background = element_blank(),
-          axis.text.x = element_text(angle = 45,
-                                     hjust = 1,
-                                     face = "italic"))
+          axis.text.x = element_text(angle = 45, hjust = 1))
   
   RA_ratio_nl_site
   }
@@ -165,6 +161,8 @@ RA_summary_data <- Typha_allocation_model_data %>%
                       values = c("cadetblue1","cyan4", "midnightblue"), # Colors to fill with
                       name = 'Nutrient Level', # Name for legend
                       labels = c('Low', 'Medium', 'High')) +
+    # Add sample size to the figure
+    geom_text(aes(label = paste("n =" ,n_samples), y = avg_RA_ratio + se + 0.05)) +
     # Make individual graphs for each taxon
     facet_grid(rows = vars(Taxon), cols = vars(site)) +
     # Specify title and axes lables
@@ -178,7 +176,6 @@ RA_summary_data <- Typha_allocation_model_data %>%
           legend.title = element_text(face = 'bold', size = 10), # Legend title format (bold)
           axis.text = element_text(size = 10),
           strip.text = element_text(size = 12),
-          strip.text.y = element_text(face = "italic"),
           strip.background = element_blank())
   
   RA_summary_data <- RA_summary_data %>% 

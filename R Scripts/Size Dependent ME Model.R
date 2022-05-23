@@ -440,10 +440,8 @@ levels(Typha_allocation_graph_data$site)
   levels(sim_res_data_ME$Taxon)
   levels(Typha_allocation_graph_data$Taxon)
   
-  levels(sim_res_data_ME$Taxon) <- c("T. angustifolia", "T. glauca",
-                                       "T. latifolia")
-  levels(Typha_allocation_graph_data$Taxon) <- c("T. angustifolia", "T. glauca",
-                                                   "T. latifolia")
+  levels(sim_res_data_ME$Taxon) <- c("Non-native", "Hybrid", "Native")
+  levels(Typha_allocation_graph_data$Taxon) <- c("Non-native", "Hybrid", "Native")
   
   levels(sim_res_data_ME$Taxon)
   levels(Typha_allocation_graph_data$Taxon)
@@ -501,7 +499,6 @@ levels(Typha_allocation_graph_data$site)
           legend.title = element_text(face = 'bold', size = 10), # Legend title format (bold)
           axis.text = element_text(size = 10),
           strip.text = element_text(size = 12),
-          strip.text.y = element_text(face = "italic"),
           strip.background = element_blank())
   
   # call the graph
@@ -549,17 +546,14 @@ levels(Typha_allocation_graph_data$site)
                size = 2) +
     # Edit Colors and Legend
     scale_fill_manual("Taxon",
-                      labels = c("T. angustifolia", "T. glauca", "T. latifolia"),
-                      values = c("tan1", "deepskyblue4", "deeppink3"),
-                      guide = guide_legend(label.theme = element_text(face = "italic"))) +
+                      labels = c("Non-native", "Hybrid", "Native"),
+                      values = c("tan1", "deepskyblue4", "deeppink3")) +
     scale_color_manual("Taxon",
-                       labels = c("T. angustifolia", "T. glauca", "T. latifolia"),
-                       values = c("tan1", "deepskyblue4", "deeppink3"),
-                       guide = guide_legend(label.theme = element_text(face = "italic"))) +
+                       labels = c("Non-native", "Hybrid", "Native"),
+                       values = c("tan1", "deepskyblue4", "deeppink3")) +
     scale_shape_manual("Taxon",
-                       labels = c("T. angustifolia", "T. glauca", "T. latifolia"),
-                       values = c(22, 21, 24),
-                       guide = guide_legend(label.theme = element_text(face = "italic"))) +
+                       labels = c("Non-native", "Hybrid", "Native"),
+                       values = c(22, 21, 24)) +
     # Make individual graphs for each taxon
     facet_grid(rows = vars(N_Level_Group), cols = vars(site)) +
     xlim(0, 100) +

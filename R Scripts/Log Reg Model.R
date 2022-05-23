@@ -385,11 +385,10 @@ Log_AIC_results
 #           "Figures/Graphs and Tables/Log AIC Results.csv")
 
 
-
-
 ##### Visualize Model #####
 
 levels(Typha_Log_Model_Data_Modified$N_Level_Group)
+levels(Typha_Log_Model_Data_Modified$Taxon)
 
 Typha_log_graph_data <- Typha_Log_Model_Data_Modified %>% 
   mutate(N_Level_Group = factor(N_Level_Group, levels = rev(levels(N_Level_Group)))) %>% 
@@ -413,31 +412,49 @@ levels(Typha_log_graph_data_edited$N_Level_Group) <- c("High",
                                                        "Low")
 levels(Typha_log_graph_data_edited$Taxon)
 
-levels(Typha_log_graph_data_edited$Taxon) <- c("T. angustifolia", "T. glauca",
-                                                 "T. latifolia")
+
+Typha_log_graph_data_edited <- Typha_log_graph_data_edited %>% 
+  mutate(Taxon = ordered(Taxon))
+
+levels(Typha_log_graph_data_edited$Taxon) <- c("Non-native", "Hybrid", "Native")
+levels(Typha_log_graph_data_edited[Typha_log_graph_data_edited$Taxon != "Native",]$Taxon)
+levels(Typha_log_graph_data_edited$Taxon)
+
+class(Typha_log_graph_data_edited$Taxon)
+
+# labels for each panel in the figure
+labs <- c("(a)", "(b)", "(c)")
 
 # Graph split by Taxa to compare N-levels within taxa
 Logistic_graph_by_Sp <- ggplot() +
-  geom_smooth(data = Typha_log_graph_data_edited[Typha_log_graph_data_edited$Taxon != "T. latifolia",],
+  geom_smooth(data = Typha_log_graph_data_edited[Typha_log_graph_data_edited$Taxon != "Native",],
               aes(x = Veg_Weight, y = probabilities, 
                   linetype = N_Level_Group,
-                  color = Taxon)) +
+                  color = Taxon),
+              se = FALSE) +
   geom_jitter(data = Typha_log_graph_data_edited,
               aes(x = Veg_Weight, y = RepStatusTF, 
                   color = Taxon,
                   shape = N_Level_Group),
               height = 0.1) +
-  facet_wrap(~ Taxon, ncol = 1) +
   scale_linetype_manual(guide = "legend",
                         values = c("solid","dashed", "dotted"), # Colors to fill with
-                        name = 'Nutrients', # Name for legend
+                        name = 'Nutrient Level', # Name for legend
                         labels = c('High', 'Medium', 'Low')) +
-  scale_color_manual(values = c("tan1", "deepskyblue4",  "deeppink3")) +
-  scale_shape_manual("",
-                     values = c(19, 10, 1)) +
-  guides(color = "none",
-         linetype = guide_legend(order = 1),
-         shape = guide_legend(order = 2)) +
+  scale_shape_manual(guide = "legend",
+                     values = c(19, 10, 1),
+                     name = "Nutrient Level",
+                     labels = c('High', 'Medium', 'Low')) +
+  scale_color_manual(guide = "",
+                     # For reasons unknown, ggplot would not accept taxon as an 
+                     # ordered factor and instead assigned colors alphabetically
+                     # therefore the colors here correspond to the taxa arranged
+                     # alphabetically.
+                     values = c("deepskyblue4", # hybrid
+                                "deeppink3", # Native
+                                "tan1")) + # Non-native
+  guides(color = "none") +
+  facet_wrap(~ Taxon, ncol = 1) +
   xlab("Vegetative Biomass (g)") +
   ylab("Estimated Probability of Flowering") +
   theme_bw() +
@@ -447,7 +464,7 @@ Logistic_graph_by_Sp <- ggplot() +
         legend.text = element_text(size = 10),                 # Legend text size
         legend.title = element_text(face = 'bold', size = 10), # Legend title format (bold)
         axis.text = element_text(size = 10),
-        strip.text = element_text(size = 10, face = "italic"),
-        strip.background = element_blank()) +
+        strip.background = element_blank(),
+        legend.key=element_blank()) +
   scale_y_continuous(breaks = c(0, 0.5, 1))
 Logistic_graph_by_Sp
