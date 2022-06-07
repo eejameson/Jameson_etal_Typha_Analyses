@@ -83,6 +83,8 @@ RA_wide_table
 
 ##### Figures ######
 
+# Note that panel labels must be added manually in a photo editor
+
 # Figure 1
 RA_ratio_nl_site
 
@@ -141,6 +143,8 @@ plasticity_table
 
 ##### Figures #####
 
+# Note that panel labels must be added manually in a photo editor
+
 # Figure 2
 size_dep_site_NL
 
@@ -197,6 +201,8 @@ Log_AIC_results
 #           "Tables/Log AIC Results.csv")
 
 ##### Figure #####
+
+# Note that panel labels must be added manually in a photo editor
 
 Logistic_graph_by_Sp
 
