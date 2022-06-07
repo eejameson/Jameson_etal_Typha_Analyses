@@ -93,14 +93,16 @@ RA_ratio_taxa_site
 # ggsave("RA Mean Ratio by Site and Taxon Updated BI.png",
 #        plot = RA_ratio_taxa_site,
 #        device = "png",
-#        path = "/Figures",
-#        width = 165, height = 200, units = "mm")
+#        path = "Figures/",
+#        width = 165, height = 200, units = "mm",
+#        dpi = 700)
 # 
 # ggsave("RA Mean Ratio by Site and NLevel Updated BI2.png",
 #        plot = RA_ratio_nl_site,
 #        device = "png",
-#        path = "/Figures",
-#        width = 165, height = 200, units = "mm")
+#        path = "Figures/",
+#        width = 165, height = 200, units = "mm",
+#        dpi = 700)
 
 #### Size Dependent Model ####
 
@@ -149,14 +151,16 @@ size_dep_site_taxon
 # ggsave("ME Predictions by Site and Taxon BI.png",
 #        plot = size_dep_site_taxon,
 #        device = "png",
-#        path = "/Figures",
-#        width = 165, height = 200, units = "mm")
+#        path = "Figures/",
+#        width = 165, height = 200, units = "mm",
+#        dpi = 700)
 # 
 # ggsave("ME Predictions by Site and NLevel BI.png",
 #        plot = size_dep_site_NL,
 #        device = "png",
-#        path = "/Figures",
-#        width = 165, height = 200, units = "mm")
+#        path = "Figures/",
+#        width = 165, height = 200, units = "mm",
+#        dpi = 700)
 
 #### Continuous NL Model ####
 
@@ -199,8 +203,9 @@ Logistic_graph_by_Sp
 # ggsave("Log Reg Model by Taxon Updated BI.png",
 #        plot = Logistic_graph_by_Sp,
 #        device = "png",
-#        path = "/Figures",
-#        width = 165, height = 200, units = "mm")
+#        path = "Figures/",
+#        width = 165, height = 200, units = "mm",
+#        dpi = 700)
 
 #### Additional Calculations ####
 

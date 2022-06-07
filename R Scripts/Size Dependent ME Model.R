@@ -201,6 +201,8 @@ resisd_norm_qq_plot <- {qqnorm(r_full_mod)
   axis(side=1, at=c(1,2), labels=c("UMBS", "ESGR"), las=1)
 }
 
+# Include a Shapiro-Wilks test
+shapiro.test(resid(full_two_way_model, type = "normalized"))
 
 ##### Plasticity Calculations #####
 

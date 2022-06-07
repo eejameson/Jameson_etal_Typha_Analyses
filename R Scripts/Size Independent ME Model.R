@@ -77,6 +77,9 @@ hist(r_lmer_model, main="", xlab="Residuals", col="grey")
   axis(side=1, at=c(1,2), labels=c("UMBS", "ESGR"), las=1)
 }
 
+# Include a Shapiro-Wilks Test
+shapiro.test(resid(summary(RA_ratio_ME_model), type = "normalized"))
+
 ##### Visualize RA Ratios #####
 
 # We want to visualize the mean RA ratio for each subgroup
