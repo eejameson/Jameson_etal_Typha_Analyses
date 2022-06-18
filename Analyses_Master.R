@@ -43,6 +43,18 @@ source("R Scripts/Functions.R")
 
 source("R Scripts/Typha Data Formating.R")
 
+##### Figure S1 #####
+
+outlier_graph
+
+# ggsave("Outlier Figure S1.png",
+#        plot = outlier_graph,
+#        device = "png",
+#        path = "Figures/",
+#        width = 165, height = 130, units = "mm",
+#        dpi = 700)
+
+
 #### Individual Sub-group Models ####
 
 source("R Scripts/Ind Subgroup Models.R")

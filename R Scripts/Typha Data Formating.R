@@ -13,7 +13,7 @@
 Typha_Data_original <- read_csv("Data/Jameson_etal_Typha_Data.csv")
 
 # Call helper functions
-#source("Sub_Scripts/Helper Functions.R")
+#source("R Scripts/Functions.R")
 
 
 #### Initial Data Manipulation ####
@@ -106,6 +106,52 @@ Complete_Typha_Data_edited %>%
 # At this point everything should be good.
 # Save with non-flowering observations
 Typha_Log_Model_Data <- Complete_Typha_Data_edited
+
+
+###### Outlier Graph ######
+
+# Keep only the flowering individuals
+flower_data <- Complete_Typha_Data_edited %>% 
+  filter(RepStatusTF == 1) %>% 
+  mutate(assigned_ID = vquestion_sp_fct(FieldID))
+  
+# Compare vegetative weight to inflorescent weight
+outlier_graph <- ggplot(data = flower_data, 
+                        mapping = aes(x = Veg_Weight, y = Infl_Weight,
+                                      color = assigned_ID, 
+                                      shape = assigned_ID)) + 
+  # add in initial open observations
+  geom_point() +
+  # Cover with the filled "weird" observations
+  geom_point(aes(fill = assigned_ID, alpha = (Outlier))) +
+  
+  scale_color_manual("Field ID",
+                     labels = c("Non-native", "Hybrid", "Native"),
+                     values = c("tan1", "deepskyblue4", "deeppink3")) +
+  scale_shape_manual("Field ID",
+                     labels = c("Non-native", "Hybrid", "Native"),
+                     values = c(22, 21, 24)) +
+  scale_fill_manual("Field ID",
+                    labels = c("Non-native", "Hybrid", "Native"),
+                    values = c("tan1", "deepskyblue4", "deeppink3"),
+                    na.value = NA) +
+  scale_alpha_manual("Outlier",
+                     labels = c("Non-outlier", "Outlier"),
+                     values = c("FALSE" = 0, "TRUE" = 1),
+                     guide = "none") +
+  xlim(0, 100) +
+  # Specify title and axes lables
+  xlab("Vegetative Biomass (g)") + 
+  ylab("Reproductive Biomass (g)") + 
+  theme_bw() +
+  theme(axis.title.x = element_text(size = 12),                # x-axis text size
+        axis.title.y = element_text(size = 12),                # y-axis text size
+        plot.title = element_text(size = 12),                  # Title text size
+        legend.text = element_text(size = 10),                 # Legend text size
+        legend.title = element_text(face = 'bold', size = 10), # Legend title format (bold)
+        axis.text = element_text(size = 10))
+
+#outlier_graph
 
 #### Final Mixed Effects Model Data #####
 
